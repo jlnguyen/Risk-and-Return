@@ -1,0 +1,105 @@
+---
+title: |
+    | Coursera Finance Specialisation (U Michigan)
+    | M2 -- Risk and Return
+    | Week 1
+author: "Joe Nguyen"
+date: "27 November 2015"
+output: html_document
+---
+
+```{r, echo=FALSE}
+rm(list = ls())
+
+# Change working directory
+dirBase <- "/home/joe/Documents/01-coursera/02-finance"
+dirWorking <- "/02-risk-and-return/r-code"
+setwd(paste0(dirBase, dirWorking))
+
+# Generic finance functions
+source(paste0(dirBase, "/01-tvm/r-code/func_finance.R"))
+```
+
+## Lecture 1 -- 1.1 Financing: Bond and Stocks
+
+| Assets | Liabilities |
+| ------ | ----------- |
+| **Real** assets | Equity / shares / stocks |
+|                 | Debt / bonds |
+
+
+## Lecture 2 -- 1.2 Zero-Coupon Government Bonds
+
+### Bonds
+
+- A bond binds the borrower to the lender in a contract
+- e.g. a loan
+- Contract: entity (e.g. you) between entity (e.g. bank)
+
+
+### Zero-Coupon (or Discount) Bonds
+
+- This bond has only one payment, the face value, at maturity
+- e.g. treasury bill or strip in the U.S.
+- The price of a discount bond is `PV(P, r, n)`
+
+#### Discount Bond: Example
+A zero-coupon bond pays $1000 in exactly one year. What is the price of value (price of the bond) today if the interest rate on similar bonds is 2%?
+
+```{r}
+PV(1000, 0.02, 1)
+```
+
+#### Yield to Maturity: Example
+What is the YTM of a 10-year zero-coupon bond with a face value of $1000 and a current price of $744.09?
+```{r}
+YTM(1000, 744.09, 10)
+
+# or using IRR
+cVec <- rep(0,10); cVec[10] <- 1000
+IRR(744.09, cVec)
+```
+
+#### Yield to Maturity: Example 2
+What is YTM if compounding interval is 6 months?
+```{r}
+YTM(1000, 744.09, 20)
+
+# or using IRR
+n <- 20
+cVec <- rep(0,n); cVec[n] <- 1000
+IRR(744.09, cVec)
+```
+
+
+## Lecture 3 -- 1.3 Government Coupon Bonds
+
+#### Coupon Bonds: Example
+Suppose a government bond has a 6% coupon, a face value of $1000, and 10 years to maturity. What is the price of this bond given that similar bonds yield an annual return of (4, 6, 8)%?
+
+Intepretation:
+- Need to assume compounding interval is 6 months (gov. bond),
+- "6% coupon" is a value (paid by gov. to you) every interval. The coupon price $C$ is:
+$$
+coupon \ percent = \frac{C}{fv}
+$$
+
+$$
+6\% = \frac{C}{1000}
+$$
+So $C = \$60$ per year, which means $C = \$30$ per interval. Now, C is paid every period for 20 periods and the face value ($1000) is also paid at maturity.
+- "What is price of this bond": How much do you pay now to buy this bond? 
+```{r}
+fv <- 1000
+n <- 10 * halfsPerYear
+r <- c(4,6,8) / 100 / halfsPerYear
+c <- r[2] * fv
+annuity_pv(c, r, n) + PV(fv, r, n)
+```
+
+So, if market value (interest rate r) is same as coupon rate, we buy bond at *face value*. If r < c_rate, we have to pay more than face value
+
+## Lecture 4 -- 1.4 Bonds Pricing: Calculations
+
+
+
