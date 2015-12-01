@@ -108,7 +108,9 @@ ggplot(data = pvDf, aes(r, price, group = pvGroup, col = pvGroup)) +
     geom_point(size = 4) + geom_line(lwd = 1.5)
 ```
 
-So, if market value (interest rate $r$) is same as coupon rate, we buy bond at *face value* or at par. If $r < c_{rate}$, the bond is selling at a premium; we pay more than the face value, and if interest rates are high $r > c_{rate}$, we buy the bond for less than face value. Note however, that these prices adjust the bond face value according to $r$ and $n$ so that the bond is **fairly priced** according to TVM. There is no profit or loss.
+So, if market value (interest rate $r$) is same as coupon rate, we buy bond at *face value* or at par. If $r < c_{rate}$, the bond is attractive to investors, who will purchase these bonds and bid the price up to a **premium** until $c_{rate} = r$. If interest rates are high $r > c_{rate}$, the bond is no longer attractive and the bond price will decrease, selling at a **discount** until $c_{rate} = r$.
+
+Note however, that these prices adjust the bond face value according to $r$ and $n$ so that the bond is **fairly priced** according to TVM. There is no profit or loss.
 
 
 ## 1.5 Sources of Risk in Bonds
