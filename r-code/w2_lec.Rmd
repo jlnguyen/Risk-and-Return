@@ -1,0 +1,111 @@
+---
+title: |
+    | Coursera Finance Specialisation (U Michigan)
+    | M2 -- Risk and Return
+    | Week 2
+author: "Joe Nguyen"
+date: "01 December 2015"
+output: html_document
+---
+
+```{r, echo=FALSE}
+rm(list = ls())
+
+# Change working directory
+dirBase <- "/home/joe/Documents/01-coursera/02-finance"
+dirWorking <- "/02-risk-and-return/r-code"
+setwd(paste0(dirBase, dirWorking))
+
+# Generic finance functions
+source(paste0(dirBase, "/01-tvm/r-code/func_finance.R"))
+```
+
+
+## 2.2 Stock Pricing / Valuation
+
+- $P_0$ is today's stock price
+- $P_1$ is the **expected** stock price next year
+- Assume the expected dividend at the end of year is $DIV_1$
+
+Now, if we sell the stock next year, it's price today is:
+$$
+P_0 = \frac{DIV_1 + P_1}{(1 + r)}
+$$
+
+Now what is $P_1$? It is simply $P_1 = \frac{DIV_2 + P_2}{(1 + r)}$, the time-adjusted value of the dividend and price at the end of year 2. By induction,
+$$
+\begin{align}
+P_0 &= \frac{DIV_1 + \frac{DIV_2 + P_2}{(1 + r)}} {(1 + r)} \\
+    &= \frac{DIV_1}{(1 + r)} + \frac{DIV_2}{(1 + r)^2} + \frac{P_2}{(1 + r)^2}
+\end{align}
+$$
+
+Here, we assume the interest rate $r$ is constant across time. Now, in the limit where $n \rightarrow \infty$, the term $\frac{P_n}{(1 + r)^n} \rightarrow 0$. Thus, the stock price today is:
+$$
+\begin{align}
+P_0 &= \sum_{t = 1}^n \frac{DIV_t}{(1 + r)^t} +  \frac{P_n}{(1 + r)^n} \\
+    &= \sum_{t = 1}^{\infty} \frac{DIV_t}{(1 + r)^t}
+\end{align}
+$$
+
+
+## 2.3 Dividend & Growth Stocks
+
+### Special Case 1: Dividend Stock
+
+Suppose dividends expect to remain approximately constant, what is the price?
+$$
+\begin{align}
+P_0 &= \sum_{t = 1}^{\infty} \frac{DIV_t}{(1 + r)^t} \\
+    &= DIV \sum_{t = 1}^{\infty} \frac{1}{(1 + r)^t} \\
+\end{align}
+$$
+
+Let $S = \sum_{t = 1}^{\infty} \frac{1}{(1 + r)^t} = \frac{1}{(1 + r)} + \frac{1}{(1 + r)^2} + \ldots$. Then:
+$$
+\begin{align}
+(1 + r) S &= 1 + \frac{1}{(1 + r)} + \frac{1}{(1 + r)^2} + \ldots \\
+ S + rS   &= 1 + S \\
+ S        &= \frac{1}{r}
+\end{align}
+$$
+
+Thus,
+$$
+\boxed{ P_0 = \frac{DIV}{r} }
+$$
+
+
+#### Dividend Stock: Example
+
+Suppose Green Utility is expected to pay a dividend of $0.50 per share for the foreseeable future and the return of this business is 10%. What should be the price of the stock?
+
+```{r}
+div <- 0.5
+r <- 0.1
+p0 <- div/r; p0
+```
+Interpret this as a **perpetuity**.
+
+What if Green Utility paid the dividends for the next 30 years? What would the price be?
+```{r}
+n <- 30
+p0 <- annuity_pv(div, r, n); p0
+```
+Interpret this as an **annuity**. Also, $0.29 is the PV at year 31 from year 31 to infinity.
+
+
+### Special Case 2: Growth Stock
+
+Suppose dividends are expected to grow at a rate of $g$ per year, what is the price of the stock?
+$$
+P_0 = \frac{DIV_1}{r - g}
+$$
+
+
+#### Growth Stock: Example
+
+Suppose Moggle is expected to pay dividends of $20 per share next year and the dividends are expected to grow indefinitely at a rate of 5% per year. Stocks of similar firms are earning an expected rate of return of 15% per year. What should be the price of a share of Moggle today?
+
+
+

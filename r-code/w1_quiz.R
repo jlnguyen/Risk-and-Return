@@ -36,7 +36,7 @@ PV(faceVal, r, n)
 
 ## ATTEMPT 2
 # (5 points) For two otherwise identical coupon bonds, the one with the higher rating will have a higher yield to maturity.
-# Higher rating -> less risk means higher YTM
+# Higher (credit) rating -> less risk means higher YTM
 # TRUE
 # CORRECT ANSWER - FALSE (rating = interest rate? If so, higher r means lowers price, which means lower YTM)
 
