@@ -102,10 +102,126 @@ $$
 P_0 = \frac{DIV_1}{r - g}
 $$
 
+Derivation: using $DIV_2 = DIV_1 (1 + g)$ and so on,
+$$
+P_0 = \frac{DIV_1}{(1 + r)} + \frac{DIV_1 (1 + g)}{(1 + r)^2} + \ldots + \frac{DIV_1 (1 + g)^{n-1}}{(1 + r)^n} + \frac{P_n}{(1 + r)^n}
+$$
+
+In the limit, $\frac{P_n}{(1 + r)^n} = 0$. Define the infinite series $S$:
+$$
+S = \frac{DIV_1}{(1 + r)} + \frac{DIV_1 (1 + g)}{(1 + r)^2} + \ldots
+$$
+
+Now,
+$$
+\begin{align}
+\frac{(1 + g)}{(1 + r)} S &= \frac{DIV_1 (1 + g)}{(1 + r)^2} + \ldots \\
+\frac{(1 + g)}{(1 + r)} S &= S - \frac{DIV_1}{(1 + r)} \\
+(1 + g) S                 &= (1 + r) S - DIV_1 \\
+DIV_1                     &= S (1 + r - 1 - g) \\
+S                         &= \frac{DIV_1}{r - g}
+\end{align}
+$$
 
 #### Growth Stock: Example
 
 Suppose Moggle is expected to pay dividends of $20 per share next year and the dividends are expected to grow indefinitely at a rate of 5% per year. Stocks of similar firms are earning an expected rate of return of 15% per year. What should be the price of a share of Moggle today?
+
+```{r}
+div <- 20
+g <- 0.05
+r <- 0.15
+p0 <- div / (r - g); p0
+```
+
+
+## 2.4 The Engine of Growth (assume perpetuities)
+
+- Invested capital per share (ICPS) - to start the enterprise
+- Return on investment (ROI) > 0 for there to exist value creation / growth
+- Cashflow per share: earnings per share (EPS) $EPS = ICPS \times ROI$. EPS comes from real assets, and is either paid out as dividends or reinvested:
+    * Dividends (DIV)
+    * Retained earnings (RE)
+    
+If we normalise by EPS:
+
+* DIV / EPS = (1 - b)
+* RE / EPS = b
+    
+then growth $g = b \times ROI$ when $b$ is reinvested into the enterpise / project.
+
+
+## 2.5 Valuation / Growth: The Big Picture
+
+THe price of a firm's stock can be divided up into:
+$$
+P_0 = \frac{EPS}{r} + PVGO
+$$
+where EPS is earnings (cashflow) per share and PVGO is the PV of growth opportunities. Now: $P_0 = PV(DIVs)$ with or without growth:
+
+- $P_0 = \frac{DIV}{r}$
+- $P_0 = \frac{DIV}{r - g}$
+
+
+#### Good or bad growth
+
+Suppose you know this abour Macrosoft, Inc.
+
+- It is expected to earn 10% on its existing assets (ROI)
+- It has $60 of capital per share
+- The market capitalisation rate is 12% (r)
+- It is not planning to grow
+
+What should it's shares trade at?
+
+```{r}
+roi <- 0.1
+eps <- 60 * roi
+div <- eps
+r <- .12
+
+p0 <- div/r; p0
+```
+
+
+## 2.6 What is Growth?
+
+#### New growth policy (for Macrosoft example): Scenario I
+
+Suppose Macrosoft, Inc. announces an exciting growth policy that plows back 70% of its earnings every year at the same ROI as its existing assets.
+
+- What growth rate will this policy generate?
+- What will happen to its share price?
+
+```{r}
+# Growth rate
+b <- 0.7
+g <- b * roi; g * 100
+
+# Share price
+div <- (1 - b) * eps
+p0 <- div / (r-g); p0
+```
+
+
+#### New growth policy (for Macrosoft example): Scenario II
+
+Suppose instead Macrosoft, Inc. announces an alternative growth policy that plows back 50% of its earnings every year at an ROI of 14%.
+
+- What growth rate will this policy generate?
+- What will happen to its share price?
+
+```{r}
+# Growth rate
+b <- 0.5
+roi <- 0.14
+g <- b * roi; g * 100
+
+# Share price
+#eps <- 60 * roi <= not applicable as new ROI on additional money plowed back only (according to discussion forum)
+div <- (1 - b) * eps
+p0 <- div / (r-g); p0
+```
 
 
 
