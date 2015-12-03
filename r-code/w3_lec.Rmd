@@ -1,0 +1,56 @@
+---
+title: |
+    | Coursera Finance Specialisation (U Michigan)
+    | M2 -- Risk and Return
+    | Week 3 -- What is Risk?
+author: "Joe Nguyen"
+date: "03 December 2015"
+output: html_document
+---
+
+```{r, echo=FALSE}
+rm(list = ls())
+
+# Change working directory
+dirBase <- "/home/joe/Documents/01-coursera/02-finance"
+dirWorking <- "/02-risk-and-return/r-code"
+setwd(paste0(dirBase, dirWorking))
+
+# Generic finance functions
+source(paste0(dirBase, "/01-tvm/r-code/func_finance.R"))
+```
+
+
+## 3.3 What is Risk?
+
+### Fundamental Sources of Risk
+
+**1. Economy-wide / Macro / Systematic**
+
+Examples:
+
+- big oil shock
+- interest rate changes
+- government policies
+
+**2. Specific / Idiosyncratic / Unique**
+
+- technological change specific to your product
+- management's investment decisions
+
+
+
+## 3.8 Recap Module 3
+
+Portfolio diversification removes specific/unique risks of individual securities. Thus, the average (risk) standard deviation of a portfolio is always higher than the standard deviation of the collective market (securities/stocks).
+
+To value a new company, examine:
+
+- its cashflow
+- the cost of capital (assets) (market interest rate) of a comparable firm: $r_a$
+
+Cashflow is known; a signature of the company. However, we don't know the cost of capital, which is what we want to determine. Now, **real assets** don't trade, but **equity** and **debt** (collectively known as liabilities) are publically traded.
+
+To simplify the problem, assume debt is zero (firm has no debt). Then, the risk and return of the equity is **identical** to the risk and return of real assets. The reason is that the balance sheet balances: the value of assets is completely financed by the equity.
+
+

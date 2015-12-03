@@ -2,7 +2,7 @@
 title: |
     | Coursera Finance Specialisation (U Michigan)
     | M2 -- Risk and Return
-    | Week 2
+    | Week 2 -- Stock Valuation
 author: "Joe Nguyen"
 date: "01 December 2015"
 output: html_document

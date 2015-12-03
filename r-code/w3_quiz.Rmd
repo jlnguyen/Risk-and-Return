@@ -1,0 +1,76 @@
+---
+title: "w3_quiz"
+author: "Joe Nguyen"
+date: "03 December 2015"
+output: html_document
+---
+
+```{r, echo=FALSE}
+rm(list = ls())
+
+# Change working directory
+dirBase <- "/home/joe/Documents/01-coursera/02-finance"
+dirWorking <- "/02-risk-and-return/r-code"
+setwd(paste0(dirBase, dirWorking))
+
+# Generic finance functions
+source(paste0(dirBase, "/01-tvm/r-code/func_finance.R"))
+```
+
+## Question 1
+(5 points) Shareholders of Exxon Oil Company face a variety of risks in holding its shares. If the economy falters, people tend to travel less and so there is less demand from the airlines industry for Exxon's fuels. This type of risk that Exxon's shareholders bear is 
+**systematic/market risk**
+
+
+## Question 2
+(5 points) Suppose there are three securities (A, B, and C) to choose from, and next year the economy will be in an expansion, normal, or recession state with probabilities 0.29, 0.34, and 0.37, respectively. The returns (%) on the securities in these states are as follows: Security A {expansion = +27.55, normal = +8.00, recession = +6.00}; Security B {+40.59, +14.00, -19.00}; Security C {+9.50, +9.50, +9.50}. If the investor is risk neutral (means that she does not care/worry about risk), which of these three securities would she buy?
+
+```{r}
+ps <- c(0.29, 0.34, 0.37)
+a <- c(27.55, 8.00, 6.00)
+b <- c(40.59, 14.00, -19.00)
+c <- c(+9.50, +9.50, +9.50)
+
+ps %*% a
+ps %*% b
+ps %*% c
+```
+**Security A**
+
+
+## Question 3
+(5 points) Suppose your dear old Grandfather approaches you for investment advice. He knows of your great training in finance and statistics and gives the following instructions: "I have lived a long time and through many challenges. But the recent financial upheaval, with its ups and downs, is too much for me to bear. Just pick for me a portfolio with the least risk." Suppose there are portfolios (A, B, and C) to choose from, and next year the economy will be in an expansion, normal, or recession state with probabilities 0.43, 0.37, and 0.20, respectively. The returns (%) on the securitiies in these states are as follows: Portfolio A {expansion = +16.19, normal = +9.50, recession = +8.00}; Portfolio B {+13.50, +7.50, +4.50}; Portfolio C {+14.00, +10.50, +7.00}. Which investment best fits your grandfather's needs?
+
+```{r}
+ps <- c(0.43, 0.37, 0.20)
+a <- c(16.19, 9.50, 8.00)
+b <- c(+13.50, +7.50, +4.50)
+c <- c(+14.00, +10.50, +7.00)
+
+ps %*% a
+ps %*% b
+ps %*% c
+```
+**Portfolio A.**
+
+Highest return (16.19) for expansion, which has highest likelihood of occurring.
+
+Actually, should choose portfolio with most spread over all states.
+
+
+## Question 4
+(10 points) One can easily reduce the amount of idiosyncratic risk of a portfolio by drastically reducing the number of stocks held in the portfolio.
+**FALSE**
+
+Reduce idiosyncratic risk by **increasing** number of stocks in portfolio.
+
+
+## Question 5
+(10 points) We often want to find investments that perform well when other parts of our portfolio are struggling. When considering stocks to add to the portfolio, those with a correlation closer to zero with our existing portfolio will most effectively help us diversify.
+**TRUE**
+
+
+## Question 6
+(10 points) As a CEO you wish to maximize the productivity of your workers. You are thinking about providing your employees with smartphones so they can be readily available to clients and increase sales. However, you are also concerned that your employees are just as likely to download apps that will distract them from their work, leading them to play games and update their social networking sites rather than focus on the job of pleasing clients. To test this you randomly select 6 employees for an experiment. You provide 3 with the new smart phone and the other 3 use their existing technology. The following chart shows their changes in sales. Based on this small sample, what is the correlation in percentage between smartphone and increase in sales? It may help to use the spreadsheet function CORREL to calculate the correlation. {Anthony, Smartphone: Yes; change in sales 120; Kira, Smartphone Yes; Change in Sales 40; Michael, Smartphone Yes; Change in Sales 150; Scarlett, Smartphone No; Change in Sales 120; Pete, Smartphone No; Change in Sales 50; Angela, Smartphone No; Change in Sales 40.} (No more than two decimals in the percentage but do not enter the % sign.)
+
+

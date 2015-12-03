@@ -2,7 +2,7 @@
 title: |
     | Coursera Finance Specialisation (U Michigan)
     | M2 -- Risk and Return
-    | Week 1
+    | Week 1 -- Bond Valuation
 author: "Joe Nguyen"
 date: "27 November 2015"
 output: html_document
