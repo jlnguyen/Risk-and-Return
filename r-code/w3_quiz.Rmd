@@ -31,9 +31,9 @@ a <- c(27.55, 8.00, 6.00)
 b <- c(40.59, 14.00, -19.00)
 c <- c(+9.50, +9.50, +9.50)
 
-ps %*% a
-ps %*% b
-ps %*% c
+cbind(ps %*% a,
+      ps %*% b,
+      ps %*% c)
 ```
 **Security A**
 
@@ -46,16 +46,25 @@ ps <- c(0.43, 0.37, 0.20)
 a <- c(16.19, 9.50, 8.00)
 b <- c(+13.50, +7.50, +4.50)
 c <- c(+14.00, +10.50, +7.00)
+stocks <- matrix(c(a,b,c), 3)
 
-ps %*% a
-ps %*% b
-ps %*% c
+cbind(ps %*% a,
+      ps %*% b,
+      ps %*% c)
+
+cbind(sd(ps * a),
+      sd(ps * b),
+      sd(ps * c))
+
+# Expected return
+reward <- colSums(stocks * ps); reward
+
+# Risk
+risk <- sqrt( colSums(ps * t((t(stocks) - reward)^2)) ); risk
 ```
-**Portfolio A.**
+Highest return (16.19) for expansion, which has highest likelihood of occurring. **Portfolio A**
 
-Highest return (16.19) for expansion, which has highest likelihood of occurring.
-
-Actually, should choose portfolio with most spread over all states.
+Actually, should choose portfolio with least spread (risk) over all states. **Portfolio C**
 
 
 ## Question 4
@@ -72,5 +81,66 @@ Reduce idiosyncratic risk by **increasing** number of stocks in portfolio.
 
 ## Question 6
 (10 points) As a CEO you wish to maximize the productivity of your workers. You are thinking about providing your employees with smartphones so they can be readily available to clients and increase sales. However, you are also concerned that your employees are just as likely to download apps that will distract them from their work, leading them to play games and update their social networking sites rather than focus on the job of pleasing clients. To test this you randomly select 6 employees for an experiment. You provide 3 with the new smart phone and the other 3 use their existing technology. The following chart shows their changes in sales. Based on this small sample, what is the correlation in percentage between smartphone and increase in sales? It may help to use the spreadsheet function CORREL to calculate the correlation. {Anthony, Smartphone: Yes; change in sales 120; Kira, Smartphone Yes; Change in Sales 40; Michael, Smartphone Yes; Change in Sales 150; Scarlett, Smartphone No; Change in Sales 120; Pete, Smartphone No; Change in Sales 50; Angela, Smartphone No; Change in Sales 40.} (No more than two decimals in the percentage but do not enter the % sign.)
+
+```{r}
+phoneDf <- data.frame(newPhone = factor(rep(c(1,0), each = 3), labels = c("no", "yes")),
+                      dsales = c(120, 40, 150, 120, 50, 40)
+                      )
+r <- cor(subset(phoneDf, newPhone == "yes", dsales),
+    subset(phoneDf, newPhone == "no", dsales))
+round(r*100, 2)
+```
+
+
+## Question 7
+(10 points) It is well known that investors generally do not like to bear risk. For two otherwise identical corporate bonds, the one with more idiosyncratic risk should have a price that is:
+
+**Higher** because idiosynsratic risk is unique to the company as opposed to macro risk present across the industry.
+
+
+## Question 8
+(15 points) Suppose your client is risk-averse but can invest in only one of the three securities, A, B, or C, in an uncertain world characterized as follows. Next year the economy will be in an expansion, normal, or recession state with probabilities 0.42, 0.40, and 0.18, respectively. The returns (%) on the securitiies in these states are as follows: Security A {expansion = +16.38, normal = +9.50, recession = +6.50}; Security B {+11.00, +7.50, +5.50}; Security C {+13.50, +9.50, +6.50}. Which security can you rule out, that is, you will not advise your client to invest in it?
+
+```{r}
+ps <- c(0.42, 0.40, 0.18)
+a <- c(16.38, 9.50, 6.50)
+b <- c(+11.00, +7.50, +5.50)
+c <- c(+13.50, +9.50, +6.50)
+stocks <- matrix(c(a,b,c), 3)
+
+# Expected return
+reward <- colSums(stocks * ps); reward
+
+# Risk
+risk <- sqrt( colSums(ps * t((t(stocks) - reward)^2)) ); risk
+
+# Return over risk
+reward / risk
+
+require(ggplot2)
+qplot(risk, -reward)
+```
+
+Desire low risk and low -reward. It appears the 3 data points form a Pareto front, and so we cannot rule out any.
+
+
+## Question 9
+(15 points) You have just taken over as a fund manager at a brokerage firm. Your assistant, Thomas, is briefing you on the current portfolio and states "We have too much of our portfolio in Alpha. We should probably move some of those funds into Gamma so we can achieve better diversification." Is he right? Here is the data on all three stocks. Assume, for convenience, that all three securities do not pay dividends. Alpha, Current Price $40.00; Current Weight 87%; Next Year's Price: Expansion $49.50, Normal $43.00, Recession $33.50; Beta, Current Price 27.50; Current Weight 13%; Next Year's Price: Expansion 27.50, Normal 26, Recession 25; Gamma, Current Price $24.00; Current Weight 0%; Next Year's Price: Expansion $29.70, Normal $25.80, Recession $20.10.
+
+```{r}
+a0 <- 40
+a1 <- c(49.5, 43, 33.5)
+aw <- 87
+
+b0 <- 27.5
+b1 <- c(27.5, 26, 25)
+bw <- 13
+
+c0 <- 24
+c1 <- c(29.7, 25.8, 20.1)
+cw <- 0
+```
+
+
 
 
