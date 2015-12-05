@@ -1,0 +1,166 @@
+---
+title: "Week 3 Quiz -- Attempt 2"
+author: "Joe Nguyen"
+date: "05 December 2015"
+output: html_document
+---
+
+```{r, echo=FALSE}
+rm(list = ls())
+
+# Change working directory
+dirBase <- "/home/joe/Documents/01-coursera/02-finance"
+dirWorking <- "/02-risk-and-return/r-code"
+setwd(paste0(dirBase, dirWorking))
+
+# Generic finance functions
+source(paste0(dirBase, "/01-tvm/r-code/func_finance.R"))
+```
+
+## Question 1
+(5 points) Shareholders of Exxon Oil Company face a variety of risks in holding its shares. If the economy falters, people tend to travel less and so there is less demand from the airlines industry for Exxon's fuels. This type of risk that Exxon's shareholders bear is 
+**systematic/market risk**
+
+
+## Question 2
+(5 points) Suppose there are three securities (A, B, and C) to choose from, and next year the economy will be in an expansion, normal, or recession state with probabilities 0.29, 0.34, and 0.37, respectively. The returns (%) on the securities in these states are as follows: Security A {expansion = +27.55, normal = +8.00, recession = +6.00}; Security B {+40.59, +14.00, -19.00}; Security C {+9.50, +9.50, +9.50}. If the investor is risk neutral (means that she does not care/worry about risk), which of these three securities would she buy?
+
+```{r}
+ps <- c(0.29, 0.34, 0.37)
+a <- c(27.55, 8.00, 6.00)
+b <- c(40.59, 14.00, -19.00)
+c <- c(+9.50, +9.50, +9.50)
+
+cbind(ps %*% a,
+      ps %*% b,
+      ps %*% c)
+```
+**Security A**
+
+
+## Question 3
+(5 points) Suppose your dear old Grandfather approaches you for investment advice. He knows of your great training in finance and statistics and gives the following instructions: "I have lived a long time and through many challenges. But the recent financial upheaval, with its ups and downs, is too much for me to bear. Just pick for me a portfolio with the least risk." Suppose there are portfolios (A, B, and C) to choose from, and next year the economy will be in an expansion, normal, or recession state with probabilities 0.35, 0.37, and 0.28, respectively. The returns (%) on the securitiies in these states are as follows: Portfolio A {expansion = +17.60, normal = +10.50, recession = +8.00}; Portfolio B {+14.00, +8.00, +3.00}; Portfolio C {+13.00, +10.50, +4.00}. Which investment best fits your grandfather's needs?
+
+```{r}
+ps <- c(0.35, 0.37, 0.28)
+a <- c(17.60, 10.50, 8.00)
+b <- c(+14.00, +8.00, +3.00)
+c <- c(+13.00, +10.50, +4.00)
+stocks <- matrix(c(a,b,c), 3)
+
+cbind(ps %*% a,
+      ps %*% b,
+      ps %*% c)
+
+cbind(sd(ps * a),
+      sd(ps * b),
+      sd(ps * c))
+
+# Expected return
+reward <- colSums(stocks * ps); reward
+
+# Risk
+risk <- sqrt( colSums(ps * t((t(stocks) - reward)^2)) ); risk
+```
+
+Portfolio with least spread (risk) over all states. **Portfolio C**
+
+
+## Question 4
+(10 points) One can easily eliminate the amount of idiosyncratic risk by bundling together any 30 stocks.
+**TRUE**
+
+#### Marked INCORRECT
+Should be bundling together **uncorrelated** stocks, not **any** stocks.
+
+
+## Question 5
+(10 points) Securities that are negatively correlated to the overall market are expected to earn high returns due to the extreme risky nature of them moving in the opposite direction to the market.
+
+**FALSE**. These securities may or may not earn high returns as their risks wrt the market remain systematic. They may earn higher returns if their idiosyncratic risk are higher compared to the market.
+
+
+## Question 6
+(10 points) As a CEO you wish to maximize the productivity of your workers. You are thinking about providing your employees with smartphones so they can be readily available to clients and increase sales. However, you are also concerned that your employees are just as likely to download apps that will distract them from their work, leading them to play games and update their social networking sites rather than focus on the job of pleasing clients. To test this you randomly select 6 employees for an experiment. You provide 3 with the new smart phone and the other 3 use their existing technology. The following chart shows their changes in sales. Based on this small sample, what is the correlation in percentage between smartphone and increase in sales? It may help to use the spreadsheet function CORREL to calculate the correlation. {Anthony, Smartphone: Yes; change in sales 120; Kira, Smartphone Yes; Change in Sales 40; Michael, Smartphone Yes; Change in Sales 150; Scarlett, Smartphone No; Change in Sales 120; Pete, Smartphone No; Change in Sales 50; Angela, Smartphone No; Change in Sales 40.} (No more than two decimals in the percentage but do not enter the % sign.)
+
+```{r}
+phoneDf <- data.frame(newPhone = factor(rep(c(1,0), each = 3), labels = c("no", "yes")),
+                      dsales = c(120, 40, 150, 120, 50, 40)
+                      )
+r <- cor(as.numeric(phoneDf$newPhone), phoneDf$dsales)
+round(r*100, 2)
+```
+
+
+## Question 7
+(10 points) It is well known that investors generally do not like to bear risk. For two otherwise identical corporate bonds, the one with more idiosyncratic risk should have a price that is 
+
+#### From ATTEMPT 1 discussion forum:
+Perhaps reasoning is that price of bond only varies with market interest rate $r$, which is a macro risk. Thus, the answer should be **the same**.
+
+
+## Question 8
+(15 points) Suppose your client is risk-averse but can invest in only one of the three securities, A, B, or C, in an uncertain world characterized as follows. Next year the economy will be in an expansion, normal, or recession state with probabilities 0.30, 0.43, and 0.27, respectively. The returns (%) on the securitiies in these states are as follows: Security A {expansion = +15.24, normal = +9.50, recession = +7.00}; Security B {+10.00, +7.50, +5.00}; Security C {+13.50, +11.00, +6.50}. Which security can you rule out, that is, you will not advise your client to invest in it?
+
+```{r}
+ps <- c(0.30, 0.43, 0.27)
+a <- c(15.24, 9.50, 7.00)
+b <- c(+10.00, +7.50, +5.00)
+c <- c(+13.50, +11.00, +6.50)
+stocks <- matrix(c(a,b,c), 3)
+
+# Expected return
+reward <- colSums(stocks * ps); reward
+
+# Risk
+risk <- sqrt( colSums(ps * t((t(stocks) - reward)^2)) ); risk
+
+# Return over risk
+reward / risk
+
+require(ggplot2)
+qplot(risk, -reward)
+```
+
+Desire low risk and low -reward. All 3 data points are Pareto optimal. **None of the securities**
+
+
+## Question 9
+(15 points) You have just taken over as a fund manager at a brokerage firm. Your assistant, Thomas, is briefing you on the current portfolio and states "We have too much of our portfolio in Alpha. We should probably move some of those funds into Gamma so we can achieve better diversification." Is he right? Here is the data on all three stocks. Assume, for convenience, that all three securities do not pay dividends. Alpha, Current Price $40.00; Current Weight 87%; Next Year's Price: Expansion $49.50, Normal $43.00, Recession $33.50; Beta, Current Price 27.50; Current Weight 13%; Next Year's Price: Expansion 27.50, Normal 26, Recession 25; Gamma, Current Price $24.00; Current Weight 0%; Next Year's Price: Expansion $29.70, Normal $25.80, Recession $20.10. 
+
+```{r}
+a0 <- 40
+a1 <- c(49.5, 43, 33.5)
+aw <- 87
+
+b0 <- 27.5
+b1 <- c(27.5, 26, 25)
+bw <- 13
+
+c0 <- 24
+c1 <- c(29.7, 25.8, 20.1)
+cw <- 0
+
+# Change in price
+da <- a1 - a0
+db <- b1 - b0
+dc <- c1 - c0
+
+# Correlation between price changes
+rbind(
+    cor(da,db),
+    cor(da,dc),
+    cor(db,dc)
+)
+```
+
+Since correlation between `da` and `db` is one, there is **NO** benefit in moving stocks from a to c.
+
+
+## Question 10
+(15 points) Suppose there are two mortgage bankers. Banker 1 has two $800,000 mortgages to sell. The borrowers live on opposite sides of the country and face an independent probability of default of 6%, with the banker able to salvage 35% of the mortgage value in case of default. Banker 2 also has two $800,000 mortgages to sell, but Banker 2's borrowers live on the same street, have the same job security and income. Put differently, the fates and thus solvency of Banker 2's borrowers move in lock step. They have a probability of defaulting of 4%, with the banker able to salvage 35% of the mortgage value in case of default. Both Bankers plan to sell their respective mortgages as a bundle in a mortgage-backed security (MBS) (i.e., as a portfolio). Which of the following is correct?
+
+**Banker 2's MBS has a higher expected return and more risk.**
+
+
+

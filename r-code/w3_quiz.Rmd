@@ -78,6 +78,9 @@ Reduce idiosyncratic risk by **increasing** number of stocks in portfolio.
 (10 points) We often want to find investments that perform well when other parts of our portfolio are struggling. When considering stocks to add to the portfolio, those with a correlation closer to zero with our existing portfolio will most effectively help us diversify.
 **TRUE**
 
+#### Marked INCORRECT
+Possible reasoning could be that negatively correlated stocks would perform better than poorly performing stocks. However, as investopedia explains, "The aim of choosing uncorrelated assets is to diversify your risks. Keeping uncorrelated assets ensures that your entire investment is not killed by just one stray bullet." [Diversification: Protecting Portfolios From Mass Destruction](http://www.investopedia.com/articles/financial-theory/09/uncorrelated-assets-diversification.asp#ixzz3tQRjJJmr)
+
 
 ## Question 6
 (10 points) As a CEO you wish to maximize the productivity of your workers. You are thinking about providing your employees with smartphones so they can be readily available to clients and increase sales. However, you are also concerned that your employees are just as likely to download apps that will distract them from their work, leading them to play games and update their social networking sites rather than focus on the job of pleasing clients. To test this you randomly select 6 employees for an experiment. You provide 3 with the new smart phone and the other 3 use their existing technology. The following chart shows their changes in sales. Based on this small sample, what is the correlation in percentage between smartphone and increase in sales? It may help to use the spreadsheet function CORREL to calculate the correlation. {Anthony, Smartphone: Yes; change in sales 120; Kira, Smartphone Yes; Change in Sales 40; Michael, Smartphone Yes; Change in Sales 150; Scarlett, Smartphone No; Change in Sales 120; Pete, Smartphone No; Change in Sales 50; Angela, Smartphone No; Change in Sales 40.} (No more than two decimals in the percentage but do not enter the % sign.)
@@ -91,11 +94,21 @@ r <- cor(subset(phoneDf, newPhone == "yes", dsales),
 round(r*100, 2)
 ```
 
+#### Marked INCORRECT
+Should be correlation between phone type and sales
+```{r}
+r <- cor(as.numeric(phoneDf$newPhone), phoneDf$dsales)
+round(r*100, 2)
+```
+
 
 ## Question 7
 (10 points) It is well known that investors generally do not like to bear risk. For two otherwise identical corporate bonds, the one with more idiosyncratic risk should have a price that is:
 
 **Higher** because idiosynsratic risk is unique to the company as opposed to macro risk present across the industry.
+
+#### Marked INCORRECT
+Perhaps reasoning is that price of bond only varies with market interest rate $r$, which is a macro risk. Thus, the answer should be **the same**.
 
 
 ## Question 8
@@ -139,8 +152,27 @@ bw <- 13
 c0 <- 24
 c1 <- c(29.7, 25.8, 20.1)
 cw <- 0
+
+# Change in price
+da <- a1 - a0
+db <- b1 - b0
+dc <- c1 - c0
+
+# Correlation between price changes
+rbind(
+    cor(da,db),
+    cor(da,dc),
+    cor(db,dc)
+)
 ```
 
+Since correlation between `da` and `db` is one, there is **NO** benefit in moving stocks from a to c.
+
+
+## Question 10
+(15 points) Suppose there are two mortgage bankers. Banker 1 has two $900,000 mortgages to sell. The borrowers live on opposite sides of the country and face an independent probability of default of 7%, with the banker able to salvage 41% of the mortgage value in case of default. Banker 2 also has two $900,000 mortgages to sell, but Banker 2's borrowers live on the same street, have the same job security and income. Put differently, the fates and thus solvency of Banker 2's borrowers move in lock step. They have a probability of defaulting of 4%, with the banker able to salvage 41% of the mortgage value in case of default. Both Bankers plan to sell their respective mortgages as a bundle in a mortgage-backed security (MBS) (i.e., as a portfolio). Which of the following is correct?
+
+**Banker 2's MBS has a higher expected return and more risk.**
 
 
 
