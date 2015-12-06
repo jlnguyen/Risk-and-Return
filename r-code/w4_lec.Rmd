@@ -1,0 +1,106 @@
+---
+title: |
+    | Coursera Finance Specialisation (U Michigan)
+    | M2 -- Risk and Return
+    | Week 4 -- Diversification adn CAPM
+author: "Joe Nguyen"
+date: "06 December 2015"
+output: html_document
+---
+
+```{r, echo=FALSE}
+rm(list = ls())
+
+# Change working directory
+dirBase <- "/home/joe/Documents/01-coursera/02-finance"
+dirWorking <- "/02-risk-and-return/r-code"
+setwd(paste0(dirBase, dirWorking))
+
+# Generic finance functions
+source(paste0(dirBase, "/01-tvm/r-code/func_finance.R"))
+```
+
+
+## 4.1 Diversification: Two Assets
+
+### Some Definitions
+
+#### Return of portfolio:
+$$
+R_p = x_a R_a + x_b R_b
+$$
+where $(x_a,\, x_b)$ is proportion (of investment) in security $a$ and $b$. Portfolio return is a linear combination.
+
+#### Risk of two-asset portfolio:
+$$
+\begin{align}
+\sigma^2(R_p) = \sigma_p^2 &= x_a^2 \sigma_a^2 + x_b^2 \sigma_b^2 + 2 x_a x_b \sigma_{ab} \\
+                           &= x_a^2 \sigma_a^2 + x_b^2 \sigma_b^2 + 2 x_a x_b \rho_{ab} \sigma_a \sigma_b
+\end{align}
+$$
+Since $\sigma_{ab} = \sigma_{ba}$, we have 2 of the last term. Risk is maximum when $a$ and $b$ are totally correlated ($\rho_{ab} = 1$) and minimum when they are uncorrelated ($\rho_{ab} = 0$) (or when they're negatively correlated? ($\rho_{ab} = -1$))
+
+
+## 4.2 Diversification: Two Assets Intuition
+
+When the two securities are totally correlated ($\rho_{ab} = 1$), there is no benefit in diversification; we may as well invest in just one of them.
+
+If there was perfect correlation ($\rho_{ab} = 1$), the main source of risk is market (instead of specific).
+
+Most likely correlation between 2 assets is around $\rho_{ab} = 0.5$. This is because the assets move with the market, but are are also unique.
+
+A correlation of $\rho_{ab} = -0.5$ is much less likely simply because the assets should be related with each other through the market.
+
+
+
+## 4.3 Diversification: Bottom Line
+
+- Was combining Google and Yahoo a good choice?
+
+Given other choices (opportunity cost), probably not because Google and Yahoo are competitors in the same space, and so their correlation would be positive high. That is, our diversification with these assets is low.
+
+- Would Google and Boeing be a better choice?
+
+Yes, probably better (not neccesarily the optimal) because they're not highly correlated, and so primarly risk is *specific* (instead of *macro/market*). Our diversification is higher.
+
+- The risk of the portfolio is affected by four factors: $(\sigma_a,\, \sigma_b,\, 2 \sigma_{ab})$
+
+- The combined risk (portfolio risk) is different compared to the average risk of the two assets viewed/held in isolation due to the additional term $2 \sigma_{ab}$
+
+
+### Diversification: Three assets, Intuition
+
+- Three securities, Google, Boeing, Merck (pharmaceutical)
+- Portfolio risk:
+
+$$
+\sigma^2(R_p) = \sigma_p^2 = x_a^2 \sigma_a^2 + x_b^2 \sigma_b^2 + x_c^2 \sigma_c^2 + 2 x_a x_b \sigma_{ab} + 2 x_a x_c \sigma_{ac} + 2 x_b x_c \sigma_{bc}
+$$
+
+- 3 unique variances $(\sigma_{ab},\, \sigma_{ac},\, \sigma_{bc})$
+- 6 relationships, 3 unique relationships
+- 9 total factors affecting $\sigma_p$: 3 variances, 6 relationships; or $= 3^2$
+
+
+#### S&P 500
+
+- $500^2 = 250,000$ total factors
+- 500 unique variances
+- $250,000 - 500 = 249,500$ relationships
+
+
+### Bottom Line
+
+- Variance of an asset determines risk faced by you only if you hold one (or very few) assets; you face both systematic and specific risks of that/those asset(s)
+- Variance of any asset is **unimportant** when held in a large (assets > 30) diversified portfolio
+- Specific risks are diversified (cancel each other); **only relations among the assets matter**
+- An asset's contribution to a portfolio's risk is determind by its relations with all other assets in the portfolio
+- All relations are due to common/systematic/market affects!
+
+
+
+
+
+
+
+

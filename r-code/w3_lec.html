@@ -77,7 +77,7 @@ img {
 <ul>
 <li>big oil shock</li>
 <li>interest rate changes</li>
-<li>government policies</li>
+<li>government or public policies</li>
 </ul>
 <p><strong>2. Specific / Idiosyncratic / Unique</strong></p>
 <ul>
@@ -88,7 +88,24 @@ img {
 </div>
 <div id="recap-module-3" class="section level2">
 <h2>3.8 Recap Module 3</h2>
-<p>Portfolio diversification removes specific/unique risks of individual securities. Thus, the average (risk) standard deviation of a portfolio is always higher than the standard deviation of the collective market (securities/stocks).</p>
+<div id="diversification" class="section level3">
+<h3>Diversification</h3>
+<p>Portfolio diversification removes specific/unique risks of individual securities. Thus, the average risk (standard deviation) of a portfolio is <strong>always lower</strong> than the collective risk of individual securities/stocks in the market. Diversification states that: <span class="math">\[
+\begin{align}
+\sigma_p   &amp;&lt; \frac{1}{n} \sum \sigma_i \\
+\sigma_p^2 &amp;&lt; \frac{1}{n^2} \left\{ \sum \sigma_i \right\}^2
+\end{align}
+\]</span> where <span class="math">\(\sigma_p\)</span> is the portfolio risk (standard deviation), <span class="math">\(\sigma_i\)</span> is risk of individual security. For two securities, <span class="math">\[
+\begin{align}
+\sigma^2(R_p) = \sigma_p^2 &amp;= x_a^2 \sigma_a^2 + x_b^2 \sigma_b^2 + 2 x_a x_b \sigma_{ab} \\
+                           &amp;= x_a^2 \sigma_a^2 + x_b^2 \sigma_b^2 + 2 x_a x_b \rho_{ab} \sigma_a \sigma_b
+\end{align}
+\]</span> We can see <span class="math">\[
+\sigma_p^2 = \frac{1}{n^2} \left\{ \sum_{i=1}^2 \sigma_i \right\}^2
+\]</span> only if <span class="math">\(\rho_{ab} = 1\)</span>; that is, securities are perfectly correlated, in which case diversification has no benefit. Perfectly correlated securities is highly unlikely.</p>
+</div>
+<div id="valuing-a-new-company" class="section level3">
+<h3>Valuing a New Company</h3>
 <p>To value a new company, examine:</p>
 <ul>
 <li>its cashflow</li>
@@ -96,6 +113,7 @@ img {
 </ul>
 <p>Cashflow is known; a signature of the company. However, we don’t know the cost of capital, which is what we want to determine. Now, <strong>real assets</strong> don’t trade, but <strong>equity</strong> and <strong>debt</strong> (collectively known as liabilities) are publically traded.</p>
 <p>To simplify the problem, assume debt is zero (firm has no debt). Then, the risk and return of the equity is <strong>identical</strong> to the risk and return of real assets. The reason is that the balance sheet balances: the value of assets is completely financed by the equity.</p>
+</div>
 </div>
 
 
