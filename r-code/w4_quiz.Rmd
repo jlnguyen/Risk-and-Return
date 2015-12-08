@@ -75,6 +75,15 @@ ast2w <- pf.n[2] * pf.price[2] / pfVal
 round(ast2w * 100, 2)
 ```
 
+### MARKED INCORRECT
+A simple question, but an important one to sort out as an investor.
+
+My mistake, should be [3] not [2]
+```{r}
+ast3w <- pf.n[3] * pf.price[3] / pfVal
+round(ast3w * 100, 2)
+```
+
 
 ## Question 4
 (10 points) Historically, managed futures had a negative correlation with the S&P 500 index. In other words, managed futures tend to do poorly when the stock market outperforms. For stock investors seeking the portfolio diversification benefits, should they allocate any of their wealth to managed futures? 
@@ -151,6 +160,10 @@ round(drop * 100, 2)
 
 **FALSE** since beta is defined as the sensitivity to market risk, it measures volatility (i.e. risk). Thus, a high beta value equates to more volatility.
 
+### MARKED INCORRECT
+Think again, revisit the notion of systematic versus total risk of a stock.
+Intuition for beta and total risk; risk of a stock in a large diversified portfolio versus risk of a stock by itself.
+
 
 ## Question 8
 (10 points) Suppose CAPM works, and you know that the expected returns on Google and IBM are estimated to be 13.50% and 10.75%, respectively. You have just calculated extremely reliable estimates of the betas of Google and IBM to be 1.22 and 0.80, respectively. Given this data, what is a reasonable estimate of the market risk-premium in percentage (the average/expected difference between the market return and the risk-free rate)? (No more than two decimals in the percentage but do not enter the % sign.)
@@ -164,7 +177,7 @@ beta <- c(1.22, 0.8)
 H <- cbind(beta, rep(1,2))
 x <- solve(H, r)
 # x <- lsfit(H, r)
-rm <- sum(x)
+rm <- x[1]
 round(rm*100, 2)
 ```
 
@@ -186,9 +199,25 @@ Look at **Week 3 Lecture Notes**. Answer is **FALSE**.
 ## Question 10
 (15 points) Your company is very well-diversified, producing and selling all kinds of goods and services, with each division being approximately of the same value/size. The beta of your company is therefore effectively 1.00. The market risk premium (the average/expected difference between the market return and the risk-free rate) is 6.50% and the return on a long-term government bond is 4.25%. You have discovered an exciting opportunity to create a new medicine that will cure the common cold. This project will require a $1 billion investment, spread out equally between now (t = 0) and the end of this year (t = 1), and will produce $153 million dollars in perpetuity starting in year 2 (t = 2). Should you propose this investment to your CEO?
 
+```{r}
+beta <- 1
+rf <- 0.0425
+rPremium <- 0.065
 
+# Project cost of capital
+r <- rf + rPremium * beta
 
+# NPV
+capex <- 1e9
+div <- 153e6
+-capex + div/r
+```
 
+Since NPV is positive, **yes**, should propose this investment.
+
+### MARKED INCORRECT
+Rethink this issue before calculating stuff.
+An issue that is more important to valuation than any other.
 
 
 
