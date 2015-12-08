@@ -2,7 +2,7 @@
 title: |
     | Coursera Finance Specialisation (U Michigan)
     | M2 -- Risk and Return
-    | Week 4 -- Diversification adn CAPM
+    | Week 4 -- Diversification and CAPM
 author: "Joe Nguyen"
 date: "06 December 2015"
 output: html_document
@@ -88,6 +88,15 @@ $$
 - 500 unique variances
 - $250,000 - 500 = 249,500$ relationships
 
+or
+```{r}
+# Unique relationships
+choose(500,2)
+
+# Total relations
+2 * choose(500,2)
+```
+
 
 ### Bottom Line
 
@@ -100,7 +109,63 @@ $$
 
 
 
+## 4.5 Risk and Return: CAPM
+
+### Recap
+
+- People are risk averse $\rightarrow$ leads to holding diversified portfolios
+- Projects $\rightarrow$ risk is largely what is common across assets
+
+$$
+R_i = \alpha + \beta_i R_m + \epsilon_i
+$$
+where $(R_i,\, R_m$) are the asset and market risks respectively. The regression coefficient $\beta_i$ is the *sensitivity* or **risk**, and the noise $\epsilon_i$ is the specific risk (to asset $i$).
 
 
+### Capital Asset Pricing Model (CAPM)
+
+The relationship between risk (beta) and return is linear, with the following form:
+$$
+r_i = r_f + (r_m - r_f) \beta_i
+$$
+where,
+
+$r_f$ -- the **expected** risk-free rate of return (e.g. from long-term government / treasury bond)
+
+$r_i$ -- the **expected** rate of return on the equity of project/idea/firm $i$
+
+$r_m$ -- the **expected** rate of return on the market portfolio
+
+$(r_m - r_i)$ -- the average market risk premium (around 5-7%)
+
+If beta $\beta_i$, the risk of comparable equity, is 1.0, the asset return $r_i$ equals the market return $r_m$. Then the asset risk equals the market risk.
 
 
+## 4.5 Risk and Return: Market Analysis
+
+### Valuing a company
+
+1. Measure risk -- determines return
+2. Robust estimation by further comparing against other comparable companies
+2. Measure cost of capital ($r_a$)
+
+
+### Putting it Together
+
+- Assume debt = 0; then asset comes from equity such that $\beta_a = \beta_e$. So, from Yahoo Finance for AAPL (Apple, Inc.), $\beta_a = 0.94$.
+
+- Now for US 10-year bond, risk-free return is $r_f = 1.45\%$
+
+- Assume market risk premium is $(r_m - r_f) = 7\%$
+
+Now using CAPM, asset rate of return (cost of capital) is:
+$$
+\begin{align}
+r_e &= r_f + (r_m - r_f) \beta_i \\
+    &= 1.45\% + 7\% \times 0.94 \\
+    &= 8.03\% \\
+    &= r_a
+\end{align}
+$$
+
+Note, rate of return on equity = rate of return on asset because we assume debt is 0.
