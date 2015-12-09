@@ -156,7 +156,7 @@ round(drop * 100, 2)
 
 
 ## Question 7
-(10 points) Given the definition of beta in the context of the CAPM, a stock with low beta can have more volatility (variance or standard deviation) than a stock with high beta.
+(10 points) Given the definition of beta in the context of the CAPM, a stock with low beta *can* have more volatility (variance or standard deviation) than a stock with high beta.
 
 **FALSE** since beta is defined as the sensitivity to market risk, it measures volatility (i.e. risk). Thus, a high beta value equates to more volatility.
 
@@ -172,6 +172,8 @@ Beta is calculated using regression analysis, and you can think of beta as the t
 
 Many utilities stocks have a beta of less than 1. Conversely, most high-tech, Nasdaq-based stocks have a beta of greater than 1, offering the possibility of a higher rate of return, but also posing more risk.
 
+**Argument for answer TRUE**
+Since beta captures historical/past risk of a stock, it is not useful for future predictions of the stock's movement (with respect to the market). Thus, a stock *could* previously have a low beta, but now be more volatile due to some event specific to the stock's industry (not market-wide).
 
 
 ## Question 8
