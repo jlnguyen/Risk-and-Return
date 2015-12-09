@@ -78,17 +78,18 @@ IRR(744.09, cVec)
 Suppose a government bond has a 6% coupon, a face value of $1000, and 10 years to maturity. What is the price of this bond given that similar bonds yield an annual return of (4, 6, 8)%?
 
 Intepretation:
+
 - Need to assume compounding interval is 6 months (gov. bond),
 - "6% coupon" is a value (paid by gov. to you) every interval. The coupon price $C$ is:
 $$
 coupon \ percent = \frac{C}{fv}
 $$
-
 $$
 6\% = \frac{C}{1000}
 $$
-So $C = \$60$ per year, which means $C = \$30$ per interval. Now, C is paid every period for 20 periods and the face value ($1000) is also paid at maturity.
-- "What is price of this bond": How much is the PV of this bond, where you pay the face value ($1000) for it now?
+So $C = \$60$ per year, which means $C = \$30$ per interval. Now, the bond pays you C every period for 20 periods and also pays the face value ($1000) at maturity.
+
+- "What is price of this bond": How much is the PV of this bond for which you pay now to buy the bond?
 ```{r}
 fv <- 1000
 n <- 10 * halfsPerYear
@@ -118,8 +119,32 @@ Note however, that these prices adjust the bond face value according to $r$ and 
 ### Government Bonds
 
 #### Interest rate risk -- two types:
-1. Price risk (PR)
-2. Coupon reinvestment risk (CRR)
+**1. Price risk (PR)**
+
+- The risk of a decline in the value of a security or portfolio. Price risk is the biggest risk faced by all investors. Although price risk specific to a stock can be minimised though diversification, market risk cannot be diversified away. Price risk, while unavoidable, can be mitigated through the use of hedging techniques.
+
+- Price risk also depends on the volatility of the securities held within a portfolio. For example, a portfolio with only a handful of junior mining companies may be exposed to a greater degree of price risk compared with a well-diversified portfolio of blue-chip stocks. Investors can use a number of tools and techniques to hedge price risk, ranging from relatively conservative decisions such as buying put options, to more aggressive strategies including short-selling and inverse exchange-traded funds (ETFs).
+
+[Investopedia](http://www.investopedia.com/terms/p/pricerisk.asp)
+
+- **Hedging** is analogous to taking out an insurance policy. If you own a home in a flood-prone area, you would want to protect that asset from the risk of flooding - to hedge it, by taking out flood insurance.
+
+- There is a risk-reward tradeoff inherent in hedging; while it reduces potential risk, it also chips away at potential gains.
+
+- A *perfect hedge* is one that eliminates all risk in a position or portfolio. That is, the hedge is 100% inversely correlated to the vulnerable asset.
+
+
+**2. Coupon reinvestment risk (CRR)**
+
+- The risk that future coupons from a bond will not be reinvested at the prevailing interest rate $r$ when the bond was initially purchased. Reinvestment risk is more likely when interest rates $r$ are declining. Reinvestment risk affects the YTM of a bond, which is calculated on the premise that all future coupon payments will be reinvested at the interest rate in effect when the bond was first purchased.
+
+- Zero-coupon bonds are the only fixed-income instruments to have no reinvestment risk, since they have no interim coupon payments.
+
+- Two factors that influence reinvestment risk:
+    - Maturity of the bond -- The longer the maturity of the bond, the higher the likelihood that interest rates will be lower than they were at the time of the bond purchase
+    - Interest rate on the bond -- The higher the interest rate (coupon rate?), the bigger the coupon payments that have to be reinvested, and consequently the reinvestment risk
+
+[Investopedia](http://www.investopedia.com/terms/r/reinvestmentrisk.asp)
 
 
 ### Corporate Bonds and Default Risk
@@ -127,9 +152,4 @@ Note however, that these prices adjust the bond face value according to $r$ and 
 - Corporate bonds almost always pay coupons
 - Like government bonds, they are subject to interest rate risk
 - But they are also subject to **default risk**
-
-
-
-
-
 

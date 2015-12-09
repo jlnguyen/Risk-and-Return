@@ -107,6 +107,20 @@ choose(500,2)
 - All relations are due to common/systematic/market affects!
 
 
+## 4.4 Measure of Risk: Beta
+
+$$
+\begin{align}
+\beta_i &= \frac{\sigma_{im}}{\sigma_m^2} \\
+        &= \frac{cov(R_i, R_m)}{var(R_m)}
+\end{align}
+$$
+where
+
+- $\sigma_{im}$ is covariance between return on security $i$ and return on market
+- $\sigma_m^2$ is variance of rate of return of the market portfolio (e.g. S&P 500 or Russell 2000)
+
+Beta captures $n-1$ relations where $n$ is the number of stocks in the portfolio.
 
 
 ## 4.5 Risk and Return: CAPM
@@ -119,7 +133,7 @@ choose(500,2)
 $$
 R_i = \alpha + \beta_i R_m + \epsilon_i
 $$
-where $(R_i,\, R_m$) are the asset and market risks respectively. The regression coefficient $\beta_i$ is the *sensitivity* or **risk**, and the noise $\epsilon_i$ is the specific risk (to asset $i$).
+where $(R_i,\, R_m$) are the asset and market returns (on equity) ($r$) respectively. The regression coefficient $\beta_i$ is the *sensitivity* or **risk**, and the noise $\epsilon_i$ is the specific return (to asset $i$).
 
 
 ### Capital Asset Pricing Model (CAPM)

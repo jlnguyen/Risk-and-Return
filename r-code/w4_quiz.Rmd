@@ -164,6 +164,15 @@ round(drop * 100, 2)
 Think again, revisit the notion of systematic versus total risk of a stock.
 Intuition for beta and total risk; risk of a stock in a large diversified portfolio versus risk of a stock by itself.
 
+**From Investopedia:**
+
+Beta is a measure of the volatility, or systematic risk, of a security or a portfolio in comparison to the market as a whole. Beta is used in the capital asset pricing model (CAPM), a model that calculates the expected return of an asset based on its beta and expected market returns.
+
+Beta is calculated using regression analysis, and you can think of beta as the tendency of a security's returns to respond to swings in the market. A beta of 1 indicates that the security's price will move with the market. A beta of less than 1 means that the security will be less volatile than the market. A beta of greater than 1 indicates that the security's price will be more volatile than the market. For example, if a stock's beta is 1.2, it's theoretically 20% more volatile than the market.
+
+Many utilities stocks have a beta of less than 1. Conversely, most high-tech, Nasdaq-based stocks have a beta of greater than 1, offering the possibility of a higher rate of return, but also posing more risk.
+
+
 
 ## Question 8
 (10 points) Suppose CAPM works, and you know that the expected returns on Google and IBM are estimated to be 13.50% and 10.75%, respectively. You have just calculated extremely reliable estimates of the betas of Google and IBM to be 1.22 and 0.80, respectively. Given this data, what is a reasonable estimate of the market risk-premium in percentage (the average/expected difference between the market return and the risk-free rate)? (No more than two decimals in the percentage but do not enter the % sign.)

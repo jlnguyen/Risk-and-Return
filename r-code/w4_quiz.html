@@ -122,6 +122,15 @@ ast2w &lt;- pf.n[2] * pf.price[2] / pfVal
 round(ast2w * 100, 2)</code></pre>
 <pre><code>##       [,1]
 ## [1,] 15.38</code></pre>
+<div id="marked-incorrect" class="section level3">
+<h3>MARKED INCORRECT</h3>
+<p>A simple question, but an important one to sort out as an investor.</p>
+<p>My mistake, should be [3] not [2]</p>
+<pre class="r"><code>ast3w &lt;- pf.n[3] * pf.price[3] / pfVal
+round(ast3w * 100, 2)</code></pre>
+<pre><code>##       [,1]
+## [1,] 53.85</code></pre>
+</div>
 </div>
 <div id="question-4" class="section level2">
 <h2>Question 4</h2>
@@ -161,12 +170,8 @@ pfw1 &lt;- c(0.24, 0.38, 0.38)
 pfw2 &lt;- c(0.32, 0.34, 0.34)
 pfw3 &lt;- c(0.48, 0.26, 0.26)
 pfw4 &lt;- c(0.72, 0.14, 0.14)
-pfw &lt;- matrix(c(pfw1,pfw2,pfw3,pfw4), 3); pfw</code></pre>
-<pre><code>##      [,1] [,2] [,3] [,4]
-## [1,] 0.24 0.32 0.48 0.72
-## [2,] 0.38 0.34 0.26 0.14
-## [3,] 0.38 0.34 0.26 0.14</code></pre>
-<pre class="r"><code>npf &lt;- 4
+pfw &lt;- matrix(c(pfw1,pfw2,pfw3,pfw4), 3)
+npf &lt;- 4
 
 # Risk of each portfolio
 pfVar &lt;- colSums(pfw^2 * risk^2)
@@ -182,6 +187,72 @@ pfVar &lt;- pfVar + covTerm
 sqrt(pfVar)</code></pre>
 <pre><code>## [1] 4.785476 4.788598 4.661754 4.097273</code></pre>
 <p><strong>Portfolio IV</strong></p>
+</div>
+<div id="question-6" class="section level2">
+<h2>Question 6</h2>
+<p>(10 points) The FTSE 100 is an index of the 100 largest market capitalization stocks traded on the London Stock Exchange. You think that 100 stocks are too much to keep up with, so you want to drop that number to 45. By doing this, what is the percentage drop in the UNIQUE relations between any two stocks in your portfolio that you will have to worry about? (No more than two decimals in the percentage but do not enter the % sign.)</p>
+<pre class="r"><code>relUq100 &lt;- choose(100,2)
+relUq45 &lt;- choose(45,2)
+drop &lt;- (relUq100 - relUq45) / relUq100
+round(drop * 100, 2)</code></pre>
+<pre><code>## [1] 80</code></pre>
+</div>
+<div id="question-7" class="section level2">
+<h2>Question 7</h2>
+<p>(10 points) Given the definition of beta in the context of the CAPM, a stock with low beta can have more volatility (variance or standard deviation) than a stock with high beta.</p>
+<p><strong>FALSE</strong> since beta is defined as the sensitivity to market risk, it measures volatility (i.e. risk). Thus, a high beta value equates to more volatility.</p>
+<div id="marked-incorrect-1" class="section level3">
+<h3>MARKED INCORRECT</h3>
+<p>Think again, revisit the notion of systematic versus total risk of a stock. Intuition for beta and total risk; risk of a stock in a large diversified portfolio versus risk of a stock by itself.</p>
+</div>
+</div>
+<div id="question-8" class="section level2">
+<h2>Question 8</h2>
+<p>(10 points) Suppose CAPM works, and you know that the expected returns on Google and IBM are estimated to be 13.50% and 10.75%, respectively. You have just calculated extremely reliable estimates of the betas of Google and IBM to be 1.22 and 0.80, respectively. Given this data, what is a reasonable estimate of the market risk-premium in percentage (the average/expected difference between the market return and the risk-free rate)? (No more than two decimals in the percentage but do not enter the % sign.)</p>
+<pre class="r"><code># return of c(google, IBM)
+r &lt;- c(0.135, 0.1075)
+beta &lt;- c(1.22, 0.8)
+
+# least squares solution (exact in this case)
+H &lt;- cbind(beta, rep(1,2))
+x &lt;- solve(H, r)
+# x &lt;- lsfit(H, r)
+rm &lt;- x[1]
+round(rm*100, 2)</code></pre>
+<pre><code>## beta 
+## 6.55</code></pre>
+</div>
+<div id="question-9" class="section level2">
+<h2>Question 9</h2>
+<p>(10 points) The standard deviation of a portfolio’s return is the weighted average of the standard deviations of the returns of all securities in the portfolio, where the weights are proportional to the amount of your investment in a security relative to your total investment.</p>
+<p>The standard deviation of a portfolio’s return is its <strong>risk</strong>. The above statement is only true if all securities are pairwise correlated. Otherwise, <span class="math">\[
+\begin{align}
+\sigma_p   &amp;&lt; \frac{1}{n} \sum \sigma_i \\
+\sigma_p^2 &amp;&lt; \frac{1}{n^2} \left\{ \sum \sigma_i \right\}^2
+\end{align}
+\]</span></p>
+<p>Look at <strong>Week 3 Lecture Notes</strong>. Answer is <strong>FALSE</strong>.</p>
+</div>
+<div id="question-10" class="section level2">
+<h2>Question 10</h2>
+<p>(15 points) Your company is very well-diversified, producing and selling all kinds of goods and services, with each division being approximately of the same value/size. The beta of your company is therefore effectively 1.00. The market risk premium (the average/expected difference between the market return and the risk-free rate) is 6.50% and the return on a long-term government bond is 4.25%. You have discovered an exciting opportunity to create a new medicine that will cure the common cold. This project will require a $1 billion investment, spread out equally between now (t = 0) and the end of this year (t = 1), and will produce $153 million dollars in perpetuity starting in year 2 (t = 2). Should you propose this investment to your CEO?</p>
+<pre class="r"><code>beta &lt;- 1
+rf &lt;- 0.0425
+rPremium &lt;- 0.065
+
+# Project cost of capital
+r &lt;- rf + rPremium * beta
+
+# NPV
+capex &lt;- 1e9
+div &lt;- 153e6
+-capex + div/r</code></pre>
+<pre><code>## [1] 423255814</code></pre>
+<p>Since NPV is positive, <strong>yes</strong>, should propose this investment.</p>
+<div id="marked-incorrect-2" class="section level3">
+<h3>MARKED INCORRECT</h3>
+<p>Rethink this issue before calculating stuff. An issue that is more important to valuation than any other.</p>
+</div>
 </div>
 
 
