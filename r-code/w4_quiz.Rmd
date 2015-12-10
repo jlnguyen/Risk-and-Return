@@ -230,9 +230,3 @@ Since NPV is positive, **yes**, should propose this investment.
 Rethink this issue before calculating stuff.
 An issue that is more important to valuation than any other.
 
-
-
-
-
-
-

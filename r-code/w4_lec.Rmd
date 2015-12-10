@@ -122,6 +122,12 @@ where
 
 Beta captures $n-1$ relations where $n$ is the number of stocks in the portfolio.
 
+#### From Investopedia
+It's important for investors to make the distinction between short-term risk - where beta and price volatility are useful - and longer-term, fundamental risk, where big-picture risk factors are more telling. High betas may mean price volatility over the near term, but they don't always rule out long-term opportunities.
+
+[Beta: Know The Risk](http://www.investopedia.com/articles/stocks/04/113004.asp)
+
+
 
 ## 4.5 Risk and Return: CAPM
 

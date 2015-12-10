@@ -1,0 +1,183 @@
+---
+title: "Week 4 Quiz -- Attempt 2"
+author: "Joe Nguyen"
+date: "10 December 2015"
+output: html_document
+---
+
+```{r, echo=FALSE}
+rm(list = ls())
+
+# Change working directory
+dirBase <- "/home/joe/Documents/01-coursera/02-finance"
+dirWorking <- "/02-risk-and-return/r-code"
+setwd(paste0(dirBase, dirWorking))
+
+# Generic finance functions
+source(paste0(dirBase, "/01-tvm/r-code/func_finance.R"))
+```
+
+## Question 1
+(5 points) According to the principle of diversification, the only way to lower the risk of a portfolio you must add assets that are negatively correlated with your existing portfolio.
+
+**FALSE** You can add stocks from other industries which may be positively or neutrally correlated because they may be correlated with the market movements. Additionally, you can diversify with defensive (non-cyclical) stocks.
+
+
+## Question 2
+(10 points) You have an equally weighted portfolio that consists of equity ownership in three firms. Firm A is trading at $56 share and has a beta of 1.20; Firm B is trading at $40 per share with a beta of 1.96; Firm C is trading at $119 per share with a beta of 0.73. Assume a risk free rate of 4.6% and market return of 7.8%. If each stock has a standard deviation of 30% and the stocks have a correlation of 0.35 with each other, your portfolio's expected return is closest to
+
+```{r}
+a.share <- 56
+a.beta <- 1.20
+
+b.share <- 40
+b.beta <- 1.96
+
+c.share <- 119
+c.beta <- 0.73
+
+rf <- 0.046
+rm <- 0.078
+
+sdAbc <- 0.2
+corAbc <- 0.5
+wAbc <- c(a.share, b.share, c.share); wAbc <- wAbc/sum(wAbc)
+
+# Rate of return (on equity) for each stock
+ri <- rf + (rm - rf) * c(a.beta, b.beta, c.beta)
+
+# Portfolio r using equal weights
+round(mean(ri) * 100, 2)
+
+#Portfolio r using weights based on share price
+round(ri %*% wAbc * 100, 2)
+```
+
+
+## Question 3
+(10 points) You have a portfolio that consists of equity ownership in three firms. You own 950 shares of Stout Drink Company (SDC), 300 shares of Carbon Computing (CC) and 300 shares of Serrano Foods (SF). Their current share prices are $110, $20, and $114, respectively. What is the percentage weight of SF in your portfolio? (No more than two decimals in the percentage but do not enter the % sign.)
+
+```{r}
+pf.n <- c(950, 300, 300)
+pf.price <- c(110, 20, 114)
+
+pfVal <- pf.n %*% pf.price
+
+ast3w <- pf.n[3] * pf.price[3] / pfVal
+round(ast3w * 100, 2)
+```
+
+
+## Question 4
+(10 points) Historically managed futures had a negative correlation with the S&P 500 index. In other words, managed futures tend to do poorly when the stock market outperforms. For stock investors seeking the portfolio diversification benefits, should they allocate any of their wealth to managed futures? 
+**Yes** Diversification can include negatively correlated stocks.
+
+
+## Question 5
+(10 points) Suppose there are three securities (A, B, and C) to choose from to create your portfolio. Next year the economy will be in an expansion, normal, or recession state with probabilities 0.40, 0.33, and 0.27, respectively. The returns (%) on the securities in these states are as follows: Security A {expansion = +8, normal = +7, recession = +2}; Security B {-1, -1, +5}; Security C {+14, +7, -8}. You are considering 4 potential portfolios of these 3 securities, with the following specific weights on each: Portfolio I (0.24, 0.38, 0.38); Portfolio II (0.32, 0.34, 0.34); Portfolio III (0.48, 0.26, 0.26); Portfolio IV (0.72, 0.14, 0.14); where the numbers inside parentheses are weight of A, weight of B and weight of C, respectively. Which portfolio has the lowest risk?
+
+```{r}
+ps <- c(0.40, 0.33, 0.27)
+ar <- c(8,7,2)
+br <- c(-1,-1,5)
+cr <- c(14,7,-8)
+nStock <- 3
+
+# Stocks returns
+r <- matrix(c(ar,br,cr), nStock)
+
+# Economy state factored stocks returns
+rps <- r * ps
+
+# Expected reward (of each stock)
+reward <- colSums(rps); reward
+
+# Expected risk (of each stock)
+risk <- sqrt( colSums(ps * t((t(r) - reward)^2)) ); risk
+
+# Covariance (ab, ac, bc)
+combIdx <- matrix(c(1,2, 1,3, 2,3), 2)
+covariance <- rep(0, nStock)
+for (i in 1:nStock) {
+    covariance[i] <- (rps[,combIdx[1,i]] - reward[combIdx[1,i]]) %*%
+        (rps[,combIdx[2,i]] - reward[combIdx[2,i]])
+}
+
+# Portfolio weights
+pfw1 <- c(0.24, 0.38, 0.38)
+pfw2 <- c(0.32, 0.34, 0.34)
+pfw3 <- c(0.48, 0.26, 0.26)
+pfw4 <- c(0.72, 0.14, 0.14)
+pfw <- matrix(c(pfw1,pfw2,pfw3,pfw4), 3)
+npf <- 4
+
+# Risk of each portfolio
+pfVar <- colSums(pfw^2 * risk^2)
+pfCovMat <- pfw[combIdx,]
+
+covTerm <- rep(0, npf)
+for (i in 1:nStock) {
+    covTerm <- covTerm + 2 * apply(pfCovMat[(2*i-1):(2*i),], 2, prod) * covariance[i]
+}
+pfVar <- pfVar + covTerm
+
+# Portfolio risk (for each portfolio)
+sqrt(pfVar)
+```
+**Portfolio IV**
+
+
+## Question 6
+(10 points) The FTSE 100 is an index of the 100 largest market capitalization stocks traded on the London Stock Exchange. You think that 100 stocks are too much to keep up with, so you want to drop that number to 35. By doing this, what is the percentage drop in the UNIQUE relations between any two stocks in your portfolio that you will have to worry about? (No more than two decimals in the percentage but do not enter the % sign.)
+
+```{r}
+relUnq100 <- choose(100,2)
+relUnq35 <- choose(35,2)
+drop <- (relUnq100 - relUnq35) / relUnq100
+round(drop*100,2)
+```
+
+
+## Question 7
+(10 points) The CAPM states that the realized/actual return on an asset in any period will be the risk free rate plus beta times the market risk premium.
+**FALSE** CAPM calculates the **expected** return, not realized/actual return.
+
+
+## Question 8
+(10 points) Suppose CAPM works, and you know that the expected returns on Google and IBM are estimated to be 13.50% and 10.75%, respectively. You have just calculated extremely reliable estimates of the betas of Google and IBM to be 1.22 and 0.80, respectively. Given this data, what is a reasonable estimate of the market risk-premium in percentage (the average/expected difference between the market return and the risk-free rate)? (No more than two decimals in the percentage but do not enter the % sign.)
+
+```{r}
+# return of c(google, IBM)
+r <- c(0.135, 0.1075)
+beta <- c(1.22, 0.8)
+
+# least squares solution (exact in this case)
+H <- cbind(beta, rep(1,2))
+x <- solve(H, r)
+# x <- lsfit(H, r)
+rm <- x[1]
+round(rm*100, 2)
+```
+
+
+## Question 9
+(10 points) The standard deviation of a portfolio's return is the weighted average of the standard deviations of the returns of all securities in the portfolio, where the weights are proportional to the amount of your investment in a security relative to your total investment.
+
+The standard deviation of a portfolio's return is its **risk**. The above statement is only true if all securities are pairwise correlated. Otherwise,
+$$
+\begin{align}
+\sigma_p   &< \frac{1}{n} \sum \sigma_i \\
+\sigma_p^2 &< \frac{1}{n^2} \left\{ \sum \sigma_i \right\}^2
+\end{align}
+$$
+
+Look at **Week 3 Lecture Notes**. Answer is **FALSE**.
+
+
+## Question 10
+(15 points) Your company is very well-diversified, producing and selling all kinds of goods and services, with each division being approximately of the same value/size. The beta of your company is therefore effectively 1.00. The market risk premium (the average/expected difference between the market return and the risk-free rate) is 7.75% and the return on a long-term government bond is 3.75%. You have discovered an exciting opportunity to create a new medicine that will cure the common cold. This project will require a $1 billion investment, spread out equally between now (t = 0) and the end of this year (t = 1), and will produce $145 million dollars in perpetuity starting in year 2 (t = 2). Should you propose this investment to your CEO?
+
+**It can't be decided until the systematic risk of the project can be quantified.** That is, the project's relationship with other potential projects. Need to think like an investor and care more about market risk than idiosyncratic risk (which is what a manager would do). Is the pharmaceutical industry worth investing in now, will it grow, what are other industries that are rapidly growing now (and worth investing in)? Pharmaceutical is better as a defensive (non-cyclical) stock which has a low beta (low volatility).
+
+
+
