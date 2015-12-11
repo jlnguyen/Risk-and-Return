@@ -1,0 +1,189 @@
+---
+title: "Final 2"
+author: "Joe Nguyen"
+date: "11 December 2015"
+output: html_document
+---
+
+```{r, echo=FALSE}
+rm(list = ls())
+
+# Change working directory
+dirBase <- "/home/joe/Documents/01-coursera/02-finance"
+dirWorking <- "/02-risk-and-return/r-code"
+setwd(paste0(dirBase, dirWorking))
+
+# Generic finance functions
+source(paste0(dirBase, "/01-tvm/r-code/func_finance.R"))
+```
+
+## Question 1
+(10 points) Steamliner, Inc. has a project that it expects will produce a cash flow of $2.3 million in 14 years. To finance the project, the company needs to borrow $1.0 million today. The project will also produce intermediate cash flows of $80,000 per year that the company can use to service semi-annual coupon payments. The firm's underwriter suggests that the market would be receptive to a 14-year bond with a face value of $1.6 million with a coupon payment of $40,000 every six months. Alternatively, Steamliner has the option to raise the $1.0 million by issuing 14-year zero coupon bonds with a face value of $1.6 million. What is the annualized yield to maturity (YTM) on the preferred option? Recall that the compounding interval is 6 months and the YTM, like all interest rates, is reported on an annualized basis. (No more than two decimals in the percentage but do not enter the % sign.)
+
+```{r}
+price <- 1e6
+n <- 14 * halfsPerYear
+faceVal <- 1.6e6
+cpay <- 40e3
+
+# Use IRR
+cVec <- rep(cpay, n); cVec[n] <- cVec[n] + faceVal
+ytm <- IRR(price, cVec)
+round(ytm * 100, 2)
+```
+
+#### Marked Incorrect
+
+Needed to multiply by 2 for annual rate.
+```{r}
+round(ytm * 50, 2)
+```
+
+
+## Question 2
+(10 points) Two years ago, Motors, Inc. issued a corporate bond with an annual coupon of $5,000, paid at the rate of $2,500 every six months, and a maturity of 6 years. The par (face) value of the bond is $500,000. Recently, however, the company has run into some financial difficulty and has restructured its obligations. Today's coupon payment has already been paid, but the remaining coupon payments will be postponed until maturity. The postponed payments will accrue interest at an annual rate of 5.0% per year and will be paid as a lump sum amount at maturity along with the face value. The discount rate on the renegotiated bonds, now considered much riskier, has gone from 6.0% prior to the renegotiations to 15.5% per annum with the announcement of the restructuring. What is the price at which the new renegotiated bond should be selling today? Recall that the compounding interval is 6 months and the YTM, like all interest rates, is reported on an annualized basis. (Enter just the number in dollars without the $ sign or a comma and round off decimals to the closest integer, i.e., rounding $30.49 down to $30 and rounding $30.50 up to $31.)
+
+```{r}
+cpay <- 2500
+n0 <- 6 * halfsPerYear
+faceVal <- 500e3
+
+g <- 0.05 / halfsPerYear
+r1 <- 0.155 / halfsPerYear
+n1 <- n0 - 2 * halfsPerYear
+
+# Future value of remaining coupon payments
+cpayFv <- annuity_fv(cpay, g, n1)
+lump <- cpayFv + faceVal
+
+# Price today
+price <- PV(lump, r1, n1); round(price)
+```
+
+
+## Question 3
+(10 points) Supersoftware, Inc. earns a total of $145 million each year to pay out to their 1 million shareholders. They are in a very competitive business and have found it a struggle to come up with new ideas. They have however just uncovered a new innovation that will involve a one-time investment one year from now (t = 1) of $237 million for a system upgrade, resulting in extra cash flows that will stay constant at $32 million per year starting the following year (t = 2) and lasting forever. If Supersoftware's cost of equity capital (the discount rate for equity) is 19.5%, by how much will this new idea change their price per share? Draw time line to understand what is going on. (Enter just the number in dollars without the $ sign or a comma and round off decimals to the closest integer, i.e., rounding $30.49 down to $30 and rounding $30.50 up to $31.)
+
+```{r}
+earn <- 145e6
+nshares <- 1e6
+eps <- earn / nshares
+
+icost <- 237e6 / nshares
+
+idiv <- 32e6 / nshares
+r <- 0.195
+
+# Nominal share price
+p0 <- eps / r
+
+## Share price with investment
+# In year 1
+div1 <- eps - icost
+
+# From year 2 onwards
+div2inf <- eps + idiv
+
+# S -> infinite series starting with term 1 / (1 + r)^2 (dervied by hand)
+S <- 1 / ( r^2 + r )
+ip0 <- div1 / (1 + r) + div2inf * S
+
+round(ip0 - p0)
+```
+
+
+## Question 4
+(10 points) Pisco, Inc., a technology company's share price is $50 per share; earnings and dividends are $5.10 a share, and the growth rate is zero. The new management of the company thinks that it can grow even in a tough, competitive market. They have just announced a new growth strategy whereby the company's earnings would begin growing by 7% per year and remain stable at this new rate. This new growth strategy will require the company to reinvest 35% of their earnings starting at the end of this year (t = 1). What will happen to the price per share of this company? Think carefully, and draw a time line.
+
+```{r}
+p0 <- 50
+div <- 5.10
+
+g <- 0.07
+b <- 0.35
+
+# Original cost of capital
+r <- div/p0
+
+# Reduced dividend due to reinvestment
+idiv <- div * (1 - b)
+
+# New share price
+ip <- idiv / (r - g)
+round(ip - p0, 2)
+```
+**Price will increase by $53.59 per share.**
+
+
+## Question 5
+(15 points) You have just taken over as a fund manager at a brokerage firm. Your assistant, Thomas, is briefing you on the current portfolio and states "We have too much of our portfolio in Alpha. We should probably move some of those funds into Gamma so we can achieve better diversification." Is he right? Here is the data on all three stocks. Assume, for convenience, that all three securities do not pay dividends. Alpha, Current Price $30.00; Current Weight 71%; Next Year's Price: Expansion $37.50, Normal $31.50, Recession $24.00; Beta, Current Price 27.50; Current Weight 29%; Next Year's Price: Expansion 27.50, Normal 26, Recession 25; Gamma, Current Price $13.00; Current Weight 0%; Next Year's Price: Expansion $14.63, Normal $14.95, Recession $7.80.
+
+```{r}
+a.p1 <- c(37.50, 31.50, 24.00)
+c.p1 <- c(14.63, 14.95, 7.80)
+
+# Determine (pairwise) correlation between a,c on p1
+cor(a.p1, c.p1); cor(c.p1, a.p1)
+
+a.p0 <- 30
+c.p0 <- 13
+
+# Expected change in share price - assume equal probabilities of economic states
+mean(a.p1) - a.p0
+mean(c.p1) - c.p0
+```
+Can't compute expected change in share price without the probabilities of economic states. Answer:
+**Only if the probabilities for different states of economy (expansion, normal and recession) become available would one be able to make a definitive statement.**
+
+#### Marked Incorrect
+
+- You do have sufficient information to make a decision in this questions.
+- A good question for figuring out portfolio composition given that we are into diversification.
+
+Answer is **Yes** C is less risky (and correlation with a < 1)
+
+```{r}
+# Risk in next year's prices
+a.reward <- mean(a.p1)
+a.risk <- sqrt( sum( (a.p1 - a.reward)^2) ); a.risk
+
+c.reward <- mean(c.p1)
+c.risk <- sqrt( sum( (c.p1 - c.reward)^2) ); c.risk
+```
+
+
+## Question 6
+(20 points) Suppose there are two mortgage bankers. Banker 1 has two $700,000 mortgages to sell. The borrowers live on opposite sides of the country and face an independent probability of default of 6%, with the banker able to salvage 41% of the mortgage value in case of default. Banker 2 also has two $700,000 mortgages to sell, but Banker 2's borrowers live on the same street, have the same job security and income. Put differently, the fates and thus solvency of Banker 2's borrowers move in lock step. They have a probability of defaulting of 6%, with the banker able to salvage 41% of the mortgage value in case of default. Both Bankers plan to sell their respective mortgages as a bundle in a mortgage-backed security (MBS) (i.e., as a portfolio). Which of the following is correct?
+
+**Banker 2's MBS has more risk but the expected returns on both MBS are the same.**
+
+Expected returns are the same because if either mortgage defaults, there is equal chance (6%) of default.
+
+
+## Question 7
+(10 points) The beta of a portfolio is the weighted average of the betas of each security in the portfolio, where the weights are proportional to the amount of your investment in a security relative to your total investment.
+
+**TRUE** not sure why, but this is answer from Final 1.
+
+
+## Question 8
+(15 points) Your own company has been very successful in producing and selling rocket engines. Given that airplane engines are not that cheap, and the airline industry is extremely sensitive to the market, the beta of your company is 1.75. The market risk premium (the average/expected difference between the market return and the risk-free rate) is 4.25% and the return on a long-term government bond is 3.50%. You have discovered an exciting opportunity to create a new wireless device that will cover a whole state in the U.S. with one station. This project will require a $4 billion investment, spread out equally between now (t = 0) and the end of this year (t = 1), and will produce $520 million dollars in perpetuity starting in year 2 (t = 2). Should you proceed with this project?
+
+```{r}
+price <- 4e9
+cpay <- 520e6
+rPrem <- 0.0425
+rf <- 0.035
+beta <- 1.75
+
+r <- rf + rPrem * beta
+p0 <- cpay / r
+
+# Project return is positive (5.6e+08)
+p0 - price
+```
+While the project return is positive ($754 million), **It can't be decided until the systematic risk of the project can be quantified.**
+
+
+
+

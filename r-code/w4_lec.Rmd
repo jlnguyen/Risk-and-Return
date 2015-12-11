@@ -107,6 +107,51 @@ choose(500,2)
 - All relations are due to common/systematic/market affects!
 
 
+#### Relationship between number of stocks and portfolio risk (sd)
+
+**Assumptions:**
+
+- Equal investment in all $n$ stocks (all weights $x_i = 1 / n$)
+- Risk of stocks are random uniform $\sigma_i \sim \text{unif}(1,5)$
+- Stocks are chosen randomly such that their pair-wise correlation are uniform random $\rho_{ij} \sim \text{unif}(0,1)$
+    - The correlation range is kept above 0 assuming negative correlation is very rare
+
+```{r}
+# Stocks data
+set.seed(1234)
+stocks.n <- 60
+stocks.sd <- runif(stocks.n, 1,5)
+stocks.cor <- runif(choose(stocks.n,2), 0,1)
+stocks.combIdx <- combn(stocks.n, 2)
+pf.sd <- stocks.sd[1]
+
+# Compute cumulative portfolio risk (sd) vector
+for (pf.size in 2:stocks.n) {
+    stocks.w <- rep(1/pf.size, pf.size)
+    
+    sqTerm <- stocks.w[1:pf.size]^2 %*% stocks.sd[1:pf.size]^2
+    
+    corTerm <- 0
+    # (local) Combination index list for pf.size
+    combIdx <- combn(pf.size,2)
+    
+    for (i in 1:choose(pf.size,2)) {
+        # Match (local) combIdx with (global) stocks.combIdx
+        iGbl <- which(combIdx[1,i] == stocks.combIdx[1,] &
+                          combIdx[2,i] == stocks.combIdx[2,])
+        corTerm <- corTerm + 2 * prod(stocks.w[combIdx[,i]]) * stocks.cor[iGbl] * prod(stocks.sd[combIdx[,i]])
+    }
+    pf.sd <- c(pf.sd, sqrt(sqTerm + corTerm))
+}
+
+require(ggplot2)
+qplot(1 : stocks.n, pf.sd) + geom_line() + 
+    ggtitle("Portfolio Risk with Number of Stocks") + 
+    labs(x = "Number of Stocks", y = "Portfolio sd")
+```
+
+
+
 ## 4.4 Measure of Risk: Beta
 
 $$

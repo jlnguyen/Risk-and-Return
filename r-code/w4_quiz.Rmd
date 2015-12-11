@@ -113,7 +113,9 @@ reward <- colSums(rps); reward
 risk <- sqrt( colSums(ps * t((t(r) - reward)^2)) ); risk
 
 # Covariance (ab, ac, bc)
-combIdx <- matrix(c(1,2, 1,3, 2,3), 2)
+# combIdx <- matrix(c(1,2, 1,3, 2,3), 2)
+combIdx <- combn(nStock, 2)
+
 covariance <- rep(0, nStock)
 for (i in 1:nStock) {
     covariance[i] <- (rps[,combIdx[1,i]] - reward[combIdx[1,i]]) %*%
